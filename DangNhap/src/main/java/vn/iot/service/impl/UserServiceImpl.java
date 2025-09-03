@@ -7,8 +7,19 @@ import vn.iot.service.UserService;
 
 public class UserServiceImpl implements UserService {
     UserDao userDao = new UserDaoImpl();
+
     @Override
     public User login(String username, String password) {
         return userDao.get(username, password);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
+
+    @Override
+    public boolean updatePassword(String username, String newPassword) {
+        return userDao.updatePassword(username, newPassword);
     }
 }
