@@ -4,8 +4,6 @@ import vn.iot.model.User;
 
 public interface UserService {
     User login(String username, String password);
-
-    // thêm mới cho forgot password
-    User findByUsername(String username);
-    boolean updatePassword(String username, String newPassword);
+    User findByUsernameAndEmail(String username, String email);
+    boolean updatePasswordByUsername(String username, String newPassword);
 }

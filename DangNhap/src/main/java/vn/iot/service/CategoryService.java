@@ -9,4 +9,5 @@ public interface CategoryService {
     void delete(int id);
     Category get(int id);
     List<Category> getAllByUser(int userId);
+    List<Category> getAll();   // thêm method này
 }

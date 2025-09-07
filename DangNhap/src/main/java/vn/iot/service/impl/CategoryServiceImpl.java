@@ -1,15 +1,13 @@
 package vn.iot.service.impl;
 
 import java.util.List;
-
 import vn.iot.dao.CategoryDao;
 import vn.iot.dao.impl.CategoryDaoImpl;
 import vn.iot.model.Category;
 import vn.iot.service.CategoryService;
 
 public class CategoryServiceImpl implements CategoryService {
-
-    private final CategoryDao dao = new CategoryDaoImpl();
+    private CategoryDao dao = new CategoryDaoImpl();
 
     @Override
     public void insert(Category category) {
@@ -34,5 +32,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getAllByUser(int userId) {
         return dao.getAllByUser(userId);
+    }
+
+    @Override
+    public List<Category> getAll() {
+        return dao.getAll();
     }
 }

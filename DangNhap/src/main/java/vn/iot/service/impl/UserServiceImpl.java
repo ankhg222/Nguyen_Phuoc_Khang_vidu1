@@ -14,12 +14,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userDao.findByUsername(username);
+    public User findByUsernameAndEmail(String username, String email) {
+        return userDao.findByUsernameAndEmail(username, email);
     }
 
     @Override
-    public boolean updatePassword(String username, String newPassword) {
-        return userDao.updatePassword(username, newPassword);
+    public boolean updatePasswordByUsername(String username, String newPassword) {
+        return userDao.updatePasswordByUsername(username, newPassword);
     }
 }

@@ -1,16 +1,19 @@
 package vn.iot.model;
 
-public class Category {
-    private int id;
-    private String name;
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Category implements Serializable {
+    private int cateId;
+    private String cateName;
     private String icon;
     private int userId;
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getCateId() { return cateId; }
+    public void setCateId(int cateId) { this.cateId = cateId; }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getCateName() { return cateName; }
+    public void setCateName(String cateName) { this.cateName = cateName; }
 
     public String getIcon() { return icon; }
     public void setIcon(String icon) { this.icon = icon; }

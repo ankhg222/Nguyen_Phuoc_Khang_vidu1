@@ -15,7 +15,7 @@ public class CategoryDaoImpl extends DBConnect implements CategoryDao {
         String sql = "INSERT INTO Category(cate_name, icons, user_id) VALUES (?, ?, ?)";
         try (Connection con = super.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, category.getName());
+            ps.setString(1, category.getCateName());
             ps.setString(2, category.getIcon());
             ps.setInt(3, category.getUserId());
             ps.executeUpdate();
@@ -29,9 +29,9 @@ public class CategoryDaoImpl extends DBConnect implements CategoryDao {
         String sql = "UPDATE Category SET cate_name=?, icons=? WHERE cate_id=?";
         try (Connection con = super.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, category.getName());
+            ps.setString(1, category.getCateName());
             ps.setString(2, category.getIcon());
-            ps.setInt(3, category.getId());
+            ps.setInt(3, category.getCateId());
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,8 +59,8 @@ public class CategoryDaoImpl extends DBConnect implements CategoryDao {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 Category c = new Category();
-                c.setId(rs.getInt("cate_id"));
-                c.setName(rs.getString("cate_name"));
+                c.setCateId(rs.getInt("cate_id"));
+                c.setCateName(rs.getString("cate_name"));
                 c.setIcon(rs.getString("icons"));
                 c.setUserId(rs.getInt("user_id"));
                 return c;
@@ -81,8 +81,29 @@ public class CategoryDaoImpl extends DBConnect implements CategoryDao {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Category c = new Category();
-                c.setId(rs.getInt("cate_id"));
-                c.setName(rs.getString("cate_name"));
+                c.setCateId(rs.getInt("cate_id"));
+                c.setCateName(rs.getString("cate_name"));
+                c.setIcon(rs.getString("icons"));
+                c.setUserId(rs.getInt("user_id"));
+                list.add(c);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<Category> getAll() {
+        List<Category> list = new ArrayList<>();
+        String sql = "SELECT * FROM Category";
+        try (Connection con = super.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Category c = new Category();
+                c.setCateId(rs.getInt("cate_id"));
+                c.setCateName(rs.getString("cate_name"));
                 c.setIcon(rs.getString("icons"));
                 c.setUserId(rs.getInt("user_id"));
                 list.add(c);

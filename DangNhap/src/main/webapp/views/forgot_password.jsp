@@ -7,37 +7,45 @@
     <title>Quên mật khẩu</title>
     <style>
         body {
-            background: #191f25;
+            background: #f5f6fa; /* nền sáng cho dịu mắt */
             font-family: 'Segoe UI', Arial, sans-serif;
         }
         .forgot-container {
-            width: 340px;
+            width: 360px;
             margin: 70px auto;
             background: #fff;
-            border-radius: 14px;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.13);
-            padding: 34px 28px 28px 28px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+            padding: 30px 26px;
         }
         .forgot-container h2 {
             text-align: center;
-            margin-bottom: 26px;
-            color: #191f25;
-            letter-spacing: 1px;
+            margin-bottom: 24px;
+            color: #222;
+            font-size: 20px;
         }
         .forgot-container label {
-            font-size: 15px;
+            font-size: 14px;
             display: block;
             margin-bottom: 6px;
+            font-weight: 500;
+            color: #333;
         }
         .forgot-container input[type="text"],
+        .forgot-container input[type="email"],
         .forgot-container input[type="password"] {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 18px;
-            border: 1px solid #d1d1d1;
-            border-radius: 8px;
-            font-size: 15px;
-            box-sizing: border-box;
+            padding: 10px 12px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        .forgot-container input:focus {
+            outline: none;
+            border-color: #0b7ac9;
+            box-shadow: 0 0 4px rgba(11,122,201,0.3);
         }
         .forgot-container button {
             width: 100%;
@@ -45,11 +53,11 @@
             background: #0b7ac9;
             color: #fff;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 6px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            margin-bottom: 12px;
+            margin-top: 4px;
             transition: background 0.25s;
         }
         .forgot-container button:hover {
@@ -59,17 +67,18 @@
             color: #e63946;
             text-align: center;
             margin-bottom: 10px;
-            font-size: 15px;
+            font-size: 14px;
         }
         .forgot-container .alert-success {
             color: #1a7f37;
             text-align: center;
             margin-bottom: 10px;
-            font-size: 15px;
+            font-size: 14px;
         }
         .forgot-container .back-link {
             text-align: right;
-            font-size: 14px;
+            font-size: 13px;
+            margin-top: 8px;
         }
         .forgot-container .back-link a {
             color: #0b7ac9;
@@ -87,8 +96,14 @@
         <label for="username">Tên đăng nhập:</label>
         <input type="text" id="username" name="username" required>
 
+        <label for="email">Gmail:</label>
+        <input type="email" id="email" name="email" required>
+
         <label for="newPassword">Mật khẩu mới:</label>
         <input type="password" id="newPassword" name="newPassword" required>
+
+        <label for="confirmPassword">Xác nhận mật khẩu:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
 
         <button type="submit">Đổi mật khẩu</button>
     </form>
@@ -101,3 +116,8 @@
     </c:if>
 
     <div class="back-link">
+        <a href="${pageContext.request.contextPath}/login">Quay lại đăng nhập</a>
+    </div>
+</div>
+</body>
+</html>

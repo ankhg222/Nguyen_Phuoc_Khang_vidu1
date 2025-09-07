@@ -6,9 +6,10 @@
     <title>Đăng nhập</title>
     <style>
         body {
-            background: #191f25;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
+		    background: #ffffff; /* hoặc dùng background: #fff; */
+		    font-family: 'Segoe UI', Arial, sans-serif;
+		}
+
         .login-box {
             width: 340px;
             margin: 70px auto;

@@ -10,26 +10,25 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import vn.iot.model.Category;
-import vn.iot.model.User;
 import vn.iot.service.CategoryService;
 import vn.iot.service.impl.CategoryServiceImpl;
 
 @WebServlet("/category/list")
 public class CategoryListController extends HttpServlet {
+    private static final long serialVersionUID = 1L;
     private final CategoryService service = new CategoryServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        // Lấy user đã login từ session
-        User user = (User) req.getSession().getAttribute("account");
-        if (user == null) {
-            resp.sendRedirect(req.getContextPath() + "/login");
-            return;
-        }
 
-        List<Category> list = service.getAllByUser(user.getId());
-        req.setAttribute("cateList", list);
+        // Lấy tất cả category
+        List<Category> cateList = service.getAll();
+
+        // Gắn vào request scope
+        req.setAttribute("cateList", cateList);
+
+        // Forward sang view
         req.getRequestDispatcher("/views/category/list.jsp").forward(req, resp);
     }
 }
