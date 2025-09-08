@@ -37,7 +37,7 @@
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Cập nhật</button>
-    <a href="${pageContext.request.contextPath}/product/list" class="btn btn-secondary">Quay lại</a>
+    <a href="${pageContext.request.contextPath}/admin/product/list" class="btn btn-secondary">Quay lại</a>
 </form>
 
 </body>

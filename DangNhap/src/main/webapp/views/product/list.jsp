@@ -32,8 +32,8 @@
             <td>${p.price}</td>
             <td>${p.categoryName}</td>
             <td>
-                <a href="${pageContext.request.contextPath}/product/edit?id=${p.productId}" class="btn btn-warning btn-sm">Sửa</a>
-                <a href="${pageContext.request.contextPath}/product/delete?id=${p.productId}" 
+                <a href="${pageContext.request.contextPath}/admin/product/edit?id=${p.productId}" class="btn btn-warning btn-sm">Sửa</a>
+                <a href="${pageContext.request.contextPath}/admin/product/delete?id=${p.productId}" 
                    class="btn btn-danger btn-sm"
                    onclick="return confirm('Bạn có chắc muốn xóa?');">Xóa</a>
             </td>

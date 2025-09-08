@@ -10,16 +10,30 @@ import vn.iot.service.UserService;
 import vn.iot.service.impl.UserServiceImpl;
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session != null && session.getAttribute("account") != null) {
-            resp.sendRedirect(req.getContextPath() + "/waiting");
-            return;
-        }
-        req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
-    }
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	        throws ServletException, IOException {
+	    HttpSession session = req.getSession(false);
+	    if (session != null && session.getAttribute("account") != null) {
+	        resp.sendRedirect(req.getContextPath() + "/waiting");
+	        return;
+	    }
+
+	    // Đọc cookie "username"
+	    String savedUser = null;
+	    Cookie[] cookies = req.getCookies();
+	    if (cookies != null) {
+	        for (Cookie c : cookies) {
+	            if ("username".equals(c.getName())) {
+	                savedUser = c.getValue();
+	            }
+	        }
+	    }
+	    req.setAttribute("savedUser", savedUser);
+
+	    req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+	}
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)

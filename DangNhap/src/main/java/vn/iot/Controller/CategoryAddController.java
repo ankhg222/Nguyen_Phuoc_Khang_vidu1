@@ -17,7 +17,7 @@ import vn.iot.model.User;
 import vn.iot.service.CategoryService;
 import vn.iot.service.impl.CategoryServiceImpl;
 
-@WebServlet("/category/add")
+@WebServlet("/admin/category/add")
 @MultipartConfig   // cần để xử lý upload file
 public class CategoryAddController extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -66,6 +66,6 @@ public class CategoryAddController extends HttpServlet {
         service.insert(c);
 
         // Quay lại trang danh sách
-        resp.sendRedirect(req.getContextPath() + "/category/list");
+        resp.sendRedirect(req.getContextPath() + "/admin/category/list");
     }
 }

@@ -57,7 +57,7 @@
         <p>Xin chào, <b>${sessionScope.account.username}</b></p>
         <div class="actions">
             <a href="${pageContext.request.contextPath}/logout" class="btn">Đăng xuất</a>
-            <a href="${pageContext.request.contextPath}/category/list" class="btn">Quản lý Category</a>
+            <a href="${pageContext.request.contextPath}/admin/category/list" class="btn">Quản lý Category</a>
         </div>
     </div>
 </body>

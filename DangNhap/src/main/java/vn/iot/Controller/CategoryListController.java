@@ -13,7 +13,7 @@ import vn.iot.model.Category;
 import vn.iot.service.CategoryService;
 import vn.iot.service.impl.CategoryServiceImpl;
 
-@WebServlet("/category/list")
+@WebServlet("/admin/category/list")
 public class CategoryListController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private final CategoryService service = new CategoryServiceImpl();

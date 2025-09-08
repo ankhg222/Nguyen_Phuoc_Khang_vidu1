@@ -88,22 +88,33 @@
     <% } %>
 
     <form action="login" method="post">
-        <label for="username">Tài khoản:</label>
-        <input type="text" id="username" name="username" required>
+    <label for="username">Tài khoản:</label>
+    <input type="text" id="username" name="username"
+           value="${savedUser != null ? savedUser : ''}" required>
 
-        <label for="password">Mật khẩu:</label>
-        <input type="password" id="password" name="password" required>
+    <label for="password">Mật khẩu:</label>
+    <input type="password" id="password" name="password" required>
 
-        <div class="remember-row">
-            <input type="checkbox" id="remember" name="remember">
-            <label for="remember">Nhớ tôi</label>
-        </div>
+    <div class="remember-row">
+        <input type="checkbox" id="remember" name="remember"
+               <c:if test="${savedUser != null}">checked</c:if> >
+        <label for="remember">Nhớ tôi</label>
+    </div>
 
-        <button type="submit">Đăng nhập</button>
-        <div class="forgot-link">
-            <a href="${pageContext.request.contextPath}/forgot_password">Quên mật khẩu?</a>
-        </div>
-    </form>
+    <button type="submit">Đăng nhập</button>
+	    <!-- Nút / link đăng ký -->
+	<div style="text-align:center; margin-top:10px;">
+	    <a href="${pageContext.request.contextPath}/register"
+	       style="display:inline-block; padding:10px 16px; background:#28a745; color:#fff;
+	              border-radius:8px; text-decoration:none; font-weight:600;">
+	        Đăng ký tài khoản
+	    </a>
+	</div>
+    <div class="forgot-link">
+        <a href="${pageContext.request.contextPath}/forgot_password">Quên mật khẩu?</a>
+    </div>
+</form>
+
 </div>
 </body>
 </html>

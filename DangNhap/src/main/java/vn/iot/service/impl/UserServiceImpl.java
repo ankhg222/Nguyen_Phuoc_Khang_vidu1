@@ -22,4 +22,9 @@ public class UserServiceImpl implements UserService {
     public boolean updatePasswordByUsername(String username, String newPassword) {
         return userDao.updatePasswordByUsername(username, newPassword);
     }
+    @Override
+    public void register(User user) {
+        // Gọi DAO để insert user
+        userDao.insert(user);
+    }
 }

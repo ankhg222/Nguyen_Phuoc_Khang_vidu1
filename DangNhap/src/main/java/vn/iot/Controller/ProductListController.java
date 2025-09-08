@@ -13,7 +13,7 @@ import vn.iot.model.Product;
 import vn.iot.service.ProductService;
 import vn.iot.service.impl.ProductServiceImpl;
 
-@WebServlet("/product/list")
+@WebServlet("/admin/product/list")
 public class ProductListController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProductService service = new ProductServiceImpl();

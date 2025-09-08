@@ -13,7 +13,15 @@ public class User implements Serializable {
     private String phone;
     private int roleid;
     private Date createdDate;
+    private String fullName;
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
     // GETTERS
     public int getId() {
         return id;

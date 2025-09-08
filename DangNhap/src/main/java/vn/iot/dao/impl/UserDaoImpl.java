@@ -79,4 +79,23 @@ public class UserDaoImpl implements UserDao {
         }
         return false;
     }
+    @Override
+    public void insert(User user) {
+        String sql = "INSERT INTO Users(username, fullname, password, phone, email, roleid, createdDate) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getFullName());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getPhone());
+            ps.setString(5, user.getEmail());
+            ps.setInt(6, user.getRoleid());
+            ps.setDate(7, user.getCreatedDate());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
