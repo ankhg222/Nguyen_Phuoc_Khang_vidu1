@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layouts/main}">
+<head><title>Danh sách Category</title></head>
+<body>
+<section layout:fragment="content">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Danh sách Category</h3>
+    <a th:href="@{/admin/categories/create}" class="btn btn-success">+ Thêm mới</a>
+  </div>
+
+  <form class="input-group mb-3" th:action="@{/admin/categories}" method="get">
+    <input type="text" class="form-control" name="q" th:value="${q}" placeholder="Tìm kiếm...">
+    <button class="btn btn-primary" type="submit">Tìm</button>
+  </form>
+
+  <table class="table table-striped table-bordered align-middle">
+    <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Tên</th>
+      <th>Ảnh</th>
+      <th>Trạng thái</th>
+      <th style="width:150px">Thao tác</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${data.content}">
+      <td th:text="${c.id}"></td>
+      <td th:text="${c.name}"></td>
+      <td>
+        <img th:if="${c.image}" th:src="${c.image}" alt="img" style="height:40px"/>
+      </td>
+      <td>
+        <span class="badge" th:classappend="${c.active}? 'bg-success':'bg-secondary'"
+              th:text="${c.active}? 'Active':'Inactive'"></span>
+      </td>
+      <td>
+        <a th:href="@{|/admin/categories/${c.id}/edit|}" class="btn btn-sm btn-warning">Sửa</a>
+        <form th:action="@{|/admin/categories/${c.id}/delete|}" method="post" class="d-inline"
+              onsubmit="return confirm('Xóa danh mục này?')">
+          <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- phân trang -->
+  <nav th:if="${data.totalPages > 1}">
+    <ul class="pagination">
+      <li class="page-item" th:classappend="${data.first}? 'disabled'">
+        <a class="page-link" th:href="@{/admin/categories(page=${data.number-1},q=${q})}">&laquo;</a>
+      </li>
+      <li class="page-item" th:each="p : ${#numbers.sequence(0, data.totalPages-1)}"
+          th:classappend="${p==data.number}? 'active'">
+        <a class="page-link" th:text="${p+1}"
+           th:href="@{/admin/categories(page=${p},q=${q})}"></a>
+      </li>
+      <li class="page-item" th:classappend="${data.last}? 'disabled'">
+        <a class="page-link" th:href="@{/admin/categories(page=${data.number+1},q=${q})}">&raquo;</a>
+      </li>
+    </ul>
+  </nav>
+</section>
+</body>
+</html>
