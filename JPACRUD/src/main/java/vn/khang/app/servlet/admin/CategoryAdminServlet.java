@@ -46,7 +46,7 @@ public class CategoryAdminServlet extends HttpServlet {
     req.setAttribute("items", items);
     req.setAttribute("q", q);
     req.setAttribute("page", page);
-    req.setAttribute("pages", (int) Math.ceil(total / (double) size));
+    req.setAttribute("pages", Math.max(0, (int) Math.ceil(total / (double) size)));
     req.getRequestDispatcher("/WEB-INF/views/admin/category/list.jsp").forward(req, resp);
   }
 

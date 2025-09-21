@@ -5,6 +5,8 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
   <persistence-unit name="VideoAppPU">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+    <!-- Các entity -->
     <class>vn.khang.app.entity.Category</class>
     <class>vn.khang.app.entity.User</class>
     <class>vn.khang.app.entity.Video</class>
@@ -13,9 +15,9 @@
       <!-- JDBC -->
       <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
       <property name="jakarta.persistence.jdbc.url" 
-                value="jdbc:sqlserver://localhost:1433;databaseName=video_admin;encrypt=true;trustServerCertificate=true"/>
+                value="jdbc:sqlserver://localhost:1433;databaseName=video_admin;encrypt=false;trustServerCertificate=true"/>
       <property name="jakarta.persistence.jdbc.user" value="sa"/>
-      <property name="jakarta.persistence.jdbc.password" value="your_password"/>
+      <property name="jakarta.persistence.jdbc.password" value="1"/>
 
       <!-- Hibernate -->
       <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>

@@ -15,7 +15,13 @@ public class User {
     private String role;
     private boolean active;
 
-    // GETTER & SETTER
+    // Thêm field cho profile
+    private String fullname;
+    private String phone;
+    private String image;
+
+    // Getter Setter
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -33,4 +39,14 @@ public class User {
 
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+
+    // Profile
+    public String getFullname() { return fullname; }
+    public void setFullname(String fullname) { this.fullname = fullname; }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public String getImage() { return image; }
+    public void setImage(String image) { this.image = image; }
 }

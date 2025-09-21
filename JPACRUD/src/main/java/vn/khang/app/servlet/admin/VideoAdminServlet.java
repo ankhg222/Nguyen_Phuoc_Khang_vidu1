@@ -55,12 +55,26 @@ public class VideoAdminServlet extends HttpServlet {
     List<Video> items = videoDAO.search(q, cid, page, size);
     long total = videoDAO.countSearch(q, cid);
 
+    // Ensure safe pagination values
+    int totalPages = 0;
+    if (total > 0) {
+      totalPages = (int) Math.ceil(total / (double) size);
+    }
+    
+    // Ensure page is within valid range
+    if (page >= totalPages && totalPages > 0) {
+      page = totalPages - 1;
+    }
+    if (page < 0) {
+      page = 0;
+    }
+
     req.setAttribute("categories", categoryDAO.findAll());
     req.setAttribute("items", items);
     req.setAttribute("q", q);
     req.setAttribute("categoryId", cid);
     req.setAttribute("page", page);
-    req.setAttribute("pages", (int) Math.ceil(total / (double) size));
+    req.setAttribute("pages", totalPages);
     req.getRequestDispatcher("/WEB-INF/views/admin/video/list.jsp").forward(req, resp);
   }
 

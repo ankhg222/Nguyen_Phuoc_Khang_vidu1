@@ -7,7 +7,7 @@ import java.io.IOException;
 import vn.khang.app.dao.UserDAO;
 import vn.khang.app.entity.User;
 
-@WebServlet(urlPatterns = {"/login"})
+@WebServlet(urlPatterns = {"/login", "/video-admin/login"})
 public class LoginServlet extends HttpServlet {
   private final UserDAO userDAO = new UserDAO();
 
