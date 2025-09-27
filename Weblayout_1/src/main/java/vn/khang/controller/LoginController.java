@@ -20,8 +20,8 @@ public class LoginController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         // Nếu đã login thì redirect luôn
-        if (req.getSession().getAttribute("userId") != null) {
-            resp.sendRedirect(req.getContextPath() + "/profile");
+        if (req.getSession().getAttribute("account") != null) {
+            resp.sendRedirect(req.getContextPath() + "/");
             return;
         }
         req.getRequestDispatcher("/views/login.jsp").forward(req, resp);

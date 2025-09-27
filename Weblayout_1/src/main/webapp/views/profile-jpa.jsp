@@ -4,10 +4,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Thông tin cá nhân - Profile Management System</title>
+    <title>Profile Update bằng JPA - Profile Management System</title>
     <style>
         .profile-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
             padding: 2rem 0;
             margin-bottom: 2rem;
@@ -27,7 +27,7 @@
             border: none;
         }
         .btn-update {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             border: none;
             padding: 12px 30px;
             border-radius: 25px;
@@ -36,8 +36,15 @@
         .student-info {
             background: #f8f9fa;
             padding: 1rem;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #28a745;
             margin-bottom: 2rem;
+        }
+        .jpa-badge {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -47,11 +54,44 @@
         <div class="student-info">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h5 class="mb-1"><i class="fas fa-user-graduate"></i> Thông tin sinh viên</h5>
+                    <h5 class="mb-1">
+                        <i class="fas fa-user-graduate"></i> Thông tin sinh viên
+                        <span class="jpa-badge ms-3">
+                            <i class="fas fa-database me-1"></i>JPA Mode
+                        </span>
+                    </h5>
                     <p class="mb-0"><strong>Họ tên:</strong> Nguyễn Phước Khang | <strong>MSSV:</strong> 23110236</p>
                 </div>
                 <div class="col-md-4 text-md-end">
-                    <small class="text-muted">Bài tập: Sitemesh + Profile Update với File Upload</small>
+                    <small class="text-muted">Bài tập: Profile Update với JPA/Hibernate</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Comparison -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0"><i class="fas fa-database me-2"></i>JDBC Version</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2">Sử dụng JDBC truyền thống với SQL thuần</p>
+                        <a href="${pageContext.request.contextPath}/profile" class="btn btn-primary btn-sm">
+                            <i class="fas fa-arrow-right me-1"></i>Chuyển sang JDBC
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-success">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0"><i class="fas fa-layer-group me-2"></i>JPA Version (Hiện tại)</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2">Sử dụng JPA/Hibernate ORM</p>
+                        <span class="badge bg-success">Đang sử dụng</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,6 +116,7 @@
                     <div class="col-md-8 text-md-start">
                         <h2 class="mb-2">
                             ${not empty user.fullname ? user.fullname : user.username}
+                            <small class="badge bg-success ms-2">JPA</small>
                         </h2>
                         <p class="mb-1"><i class="fas fa-user me-2"></i>Username: ${user.username}</p>
                         <p class="mb-1"><i class="fas fa-envelope me-2"></i>Email: ${user.email}</p>
@@ -100,18 +141,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         </c:if>
-        <c:if test="${not empty msg}">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i>${msg}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        </c:if>
-        <c:if test="${not empty err}">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i>${err}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        </c:if>
 
         <!-- Profile Update Form -->
         <div class="row justify-content-center">
@@ -119,43 +148,43 @@
                 <div class="card profile-card">
                     <div class="card-header bg-transparent border-0 pb-0">
                         <h4 class="card-title mb-0">
-                            <i class="fas fa-edit me-2 text-primary"></i>Cập nhật thông tin cá nhân
+                            <i class="fas fa-layer-group me-2 text-success"></i>Cập nhật Profile với JPA
                         </h4>
                     </div>
                     <div class="card-body p-4">
-                        <form action="${pageContext.request.contextPath}/profile" method="post" 
+                        <form action="${pageContext.request.contextPath}/profile-jpa" method="post" 
                               enctype="multipart/form-data" id="profileForm">
                             
                             <!-- Fullname -->
                             <div class="mb-4">
                                 <label for="fullName" class="form-label fw-bold">
-                                    <i class="fas fa-user me-2 text-primary"></i>Họ và tên *
+                                    <i class="fas fa-user me-2 text-success"></i>Họ và tên *
                                 </label>
                                 <input type="text" id="fullName" name="fullName" 
                                        class="form-control form-control-lg" 
                                        value="${user.fullname}" 
                                        required 
                                        placeholder="Nhập họ và tên đầy đủ">
-                                <div class="form-text">Họ tên sẽ hiển thị công khai trên hệ thống</div>
+                                <div class="form-text">Cập nhật bằng JPA EntityManager</div>
                             </div>
 
                             <!-- Phone -->
                             <div class="mb-4">
                                 <label for="phone" class="form-label fw-bold">
-                                    <i class="fas fa-phone me-2 text-primary"></i>Số điện thoại
+                                    <i class="fas fa-phone me-2 text-success"></i>Số điện thoại
                                 </label>
                                 <input type="tel" id="phone" name="phone" 
                                        class="form-control form-control-lg" 
                                        value="${user.phone}" 
                                        placeholder="Nhập số điện thoại (tùy chọn)"
                                        pattern="[0-9]{10,11}">
-                                <div class="form-text">Số điện thoại 10-11 chữ số</div>
+                                <div class="form-text">Hibernate sẽ tự động quản lý transaction</div>
                             </div>
 
                             <!-- Avatar Upload -->
                             <div class="mb-4">
                                 <label class="form-label fw-bold">
-                                    <i class="fas fa-camera me-2 text-primary"></i>Ảnh đại diện
+                                    <i class="fas fa-camera me-2 text-success"></i>Ảnh đại diện
                                 </label>
                                 
                                 <div class="row mb-3">
@@ -186,7 +215,7 @@
                                                class="form-control"
                                                accept=".jpg,.jpeg,.png,.gif"
                                                onchange="previewImage(this);">
-                                        <small class="text-muted">Chỉ chấp nhận file: JPG, JPEG, PNG, GIF (tối đa 5MB)</small>
+                                        <small class="text-muted">File sẽ được lưu và path được persist qua JPA</small>
                                         
                                         <!-- Preview new image -->
                                         <div id="imagePreview" style="display: none;" class="mt-3">
@@ -200,10 +229,10 @@
                             <!-- Submit Button -->
                             <div class="text-center pt-3">
                                 <button type="submit" class="btn btn-update btn-lg text-white">
-                                    <i class="fas fa-save me-2"></i>Cập nhật thông tin
+                                    <i class="fas fa-layer-group me-2"></i>Cập nhật với JPA
                                 </button>
-                                <a href="${pageContext.request.contextPath}/" class="btn btn-outline-secondary btn-lg ms-3">
-                                    <i class="fas fa-arrow-left me-2"></i>Quay lại
+                                <a href="${pageContext.request.contextPath}/profile" class="btn btn-outline-primary btn-lg ms-3">
+                                    <i class="fas fa-database me-2"></i>Chuyển sang JDBC
                                 </a>
                             </div>
                         </form>
@@ -212,26 +241,32 @@
             </div>
         </div>
 
-        <!-- Technology Info -->
+        <!-- Technology Details -->
         <div class="row mt-4">
             <div class="col-12">
                 <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Chi tiết kỹ thuật JPA Implementation</h6>
+                    </div>
                     <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-md-4">
-                                <i class="fas fa-database fa-2x text-success mb-2"></i>
-                                <h6>Database</h6>
-                                <small class="text-muted">JDBC & JPA để lưu trữ</small>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-layer-group text-success me-2"></i>JPA/Hibernate Features:</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>EntityManager để quản lý entities</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Transaction tự động với begin/commit/rollback</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Object-Relational Mapping (ORM)</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Lazy loading và caching</li>
+                                </ul>
                             </div>
-                            <div class="col-md-4">
-                                <i class="fas fa-upload fa-2x text-warning mb-2"></i>
-                                <h6>File Upload</h6>
-                                <small class="text-muted">Multipart Form Data</small>
-                            </div>
-                            <div class="col-md-4">
-                                <i class="fas fa-paint-brush fa-2x text-info mb-2"></i>
-                                <h6>Sitemesh 3</h6>
-                                <small class="text-muted">Bootstrap Template</small>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-database text-primary me-2"></i>So sánh với JDBC:</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-arrow-right text-info me-2"></i>JDBC: SQL thuần, control nhiều hơn</li>
+                                    <li><i class="fas fa-arrow-right text-success me-2"></i>JPA: ORM, code ngắn gọn hơn</li>
+                                    <li><i class="fas fa-arrow-right text-warning me-2"></i>Performance: JDBC nhanh hơn, JPA tiện hơn</li>
+                                    <li><i class="fas fa-arrow-right text-danger me-2"></i>Learning curve: JPA phức tạp hơn</li>
+                                </ul>
                             </div>
                         </div>
                     </div>

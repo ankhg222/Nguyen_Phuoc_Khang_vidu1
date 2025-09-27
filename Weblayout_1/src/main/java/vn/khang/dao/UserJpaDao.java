@@ -8,7 +8,17 @@ import jakarta.persistence.Persistence;
 import vn.khang.entity.UserEntity;
 
 public class UserJpaDao {
-    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("dataSource");
+    private final EntityManagerFactory emf;
+    
+    public UserJpaDao() {
+        try {
+            this.emf = Persistence.createEntityManagerFactory("dataSource");
+            System.out.println("✅ JPA EntityManagerFactory initialized successfully!");
+        } catch (Exception e) {
+            System.err.println("❌ Failed to initialize JPA EntityManagerFactory: " + e.getMessage());
+            throw new RuntimeException("JPA initialization failed. Please check database connection settings.", e);
+        }
+    }
 
     public UserEntity findById(int id) {
         EntityManager em = emf.createEntityManager();

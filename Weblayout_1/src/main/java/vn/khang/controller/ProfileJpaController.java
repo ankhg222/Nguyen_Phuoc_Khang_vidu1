@@ -8,7 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
-import vn.khang.dao.UserDao;
+import vn.khang.dao.UserJpaDao;
+import vn.khang.entity.UserEntity;
 import vn.khang.model.User;
 
 import java.io.IOException;
@@ -18,26 +19,45 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-
-@WebServlet("/profile")
+/**
+ * ProfileJpaController - Sử dụng JPA để update profile
+ * Để demo cả 2 phương pháp: JDBC (ProfileController) và JPA (ProfileJpaController)
+ * 
+ * @author Nguyễn Phước Khang - 23110236
+ */
+@WebServlet("/profile-jpa")
 @MultipartConfig(
     fileSizeThreshold = 1024 * 1024,
     maxFileSize = 5 * 1024 * 1024,
     maxRequestSize = 10 * 1024 * 1024
 )
-public class ProfileController extends HttpServlet {
+public class ProfileJpaController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private UserDao userDao;
+    private UserJpaDao userJpaDao;
 
     @Override
     public void init() {
-        userDao = new UserDao();
+        try {
+            userJpaDao = new UserJpaDao();
+            System.out.println("✅ ProfileJpaController initialized successfully!");
+        } catch (Exception e) {
+            System.err.println("❌ ProfileJpaController init failed: " + e.getMessage());
+            // JPA initialization failed, but don't crash the entire servlet
+            userJpaDao = null;
+        }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        // Check if JPA is available
+        if (userJpaDao == null) {
+            req.setAttribute("error", "JPA không khả dụng. Vui lòng kiểm tra cấu hình database!");
+            req.getRequestDispatcher("/views/error.jsp").forward(req, resp);
+            return;
+        }
+        
         // Kiểm tra đăng nhập
         User account = (User) req.getSession().getAttribute("account");
         Integer userId = (Integer) req.getSession().getAttribute("userId");
@@ -47,12 +67,17 @@ public class ProfileController extends HttpServlet {
             return;
         }
         
-        // Lấy thông tin user mới nhất từ database
-        int id = (account != null) ? account.getId() : userId;
-        User u = userDao.findById(id);
+        try {
+            // Lấy thông tin user mới nhất từ database bằng JPA
+            int id = (account != null) ? account.getId() : userId;
+            UserEntity userEntity = userJpaDao.findById(id);
+        
+        // Convert UserEntity to User for JSP
+        User u = convertToUser(userEntity);
         req.setAttribute("user", u);
-        req.setAttribute("title", "Thông tin cá nhân - " + (u.getFullname() != null ? u.getFullname() : u.getUsername()));
-        req.getRequestDispatcher("/views/profile.jsp").forward(req, resp);
+        req.setAttribute("title", "Profile JPA - " + (u.getFullname() != null ? u.getFullname() : u.getUsername()));
+        req.setAttribute("useJpa", true);
+        req.getRequestDispatcher("/views/profile-jpa.jsp").forward(req, resp);
     }
 
     @Override
@@ -76,9 +101,11 @@ public class ProfileController extends HttpServlet {
         // Validate input
         if (fullName == null || fullName.trim().isEmpty()) {
             req.setAttribute("error", "Họ tên không được để trống!");
-            User u = userDao.findById(id);
+            UserEntity userEntity = userJpaDao.findById(id);
+            User u = convertToUser(userEntity);
             req.setAttribute("user", u);
-            req.getRequestDispatcher("/views/profile.jsp").forward(req, resp);
+            req.setAttribute("useJpa", true);
+            req.getRequestDispatcher("/views/profile-jpa.jsp").forward(req, resp);
             return;
         }
 
@@ -98,9 +125,11 @@ public class ProfileController extends HttpServlet {
                 
                 if (!fileExt.matches("\\.(jpg|jpeg|png|gif)")) {
                     req.setAttribute("error", "Chỉ cho phép upload file ảnh (jpg, jpeg, png, gif)!");
-                    User u = userDao.findById(id);
+                    UserEntity userEntity = userJpaDao.findById(id);
+                    User u = convertToUser(userEntity);
                     req.setAttribute("user", u);
-                    req.getRequestDispatcher("/views/profile.jsp").forward(req, resp);
+                    req.setAttribute("useJpa", true);
+                    req.getRequestDispatcher("/views/profile-jpa.jsp").forward(req, resp);
                     return;
                 }
 
@@ -112,7 +141,7 @@ public class ProfileController extends HttpServlet {
                 }
 
                 // Tạo tên file unique
-                String newFileName = "avatar_" + id + "_" + System.currentTimeMillis() + fileExt;
+                String newFileName = "avatar_jpa_" + id + "_" + System.currentTimeMillis() + fileExt;
                 Path filePath = uploadPath.resolve(newFileName);
 
                 // Save file
@@ -122,33 +151,58 @@ public class ProfileController extends HttpServlet {
                 } catch (Exception e) {
                     e.printStackTrace();
                     req.setAttribute("error", "Lỗi khi upload file: " + e.getMessage());
-                    User u = userDao.findById(id);
+                    UserEntity userEntity = userJpaDao.findById(id);
+                    User u = convertToUser(userEntity);
                     req.setAttribute("user", u);
-                    req.getRequestDispatcher("/views/profile.jsp").forward(req, resp);
+                    req.setAttribute("useJpa", true);
+                    req.getRequestDispatcher("/views/profile-jpa.jsp").forward(req, resp);
                     return;
                 }
             }
         }
 
-        // Update profile
-        boolean success = userDao.updateProfile(id, fullName.trim(), phone, imageFileName);
+        // Update profile using JPA
+        boolean success = userJpaDao.updateProfile(id, fullName.trim(), phone, imageFileName);
         
         if (success) {
-            // Cập nhật lại session nếu cần
-            User updatedUser = userDao.findById(id);
+            req.setAttribute("success", "Cập nhật thông tin thành công bằng JPA!");
+            UserEntity updatedEntity = userJpaDao.findById(id);
+            User updatedUser = convertToUser(updatedEntity);
+            req.setAttribute("user", updatedUser);
+            
+            // Cập nhật session nếu cần
             if (account != null) {
                 req.getSession().setAttribute("account", updatedUser);
             }
-            
-            req.setAttribute("success", "Cập nhật thông tin thành công!");
-            req.setAttribute("user", updatedUser);
         } else {
             req.setAttribute("error", "Cập nhật thông tin thất bại!");
-            User u = userDao.findById(id);
+            UserEntity userEntity = userJpaDao.findById(id);
+            User u = convertToUser(userEntity);
             req.setAttribute("user", u);
         }
         
-        req.setAttribute("title", "Thông tin cá nhân - " + fullName);
-        req.getRequestDispatcher("/views/profile.jsp").forward(req, resp);
+        req.setAttribute("title", "Profile JPA - " + fullName);
+        req.setAttribute("useJpa", true);
+        req.getRequestDispatcher("/views/profile-jpa.jsp").forward(req, resp);
+    }
+    
+    /**
+     * Convert UserEntity to User model
+     */
+    private User convertToUser(UserEntity entity) {
+        if (entity == null) return null;
+        
+        User user = new User();
+        user.setId(entity.getId());
+        user.setEmail(entity.getEmail());
+        user.setUsername(entity.getUsername());
+        user.setFullname(entity.getFullname());
+        user.setPassword(entity.getPassword());
+        user.setAvatar(entity.getAvatar());
+        user.setRoleId(entity.getRoleid());
+        user.setPhone(entity.getPhone());
+        // Note: createdDate conversion might need adjustment based on your User model
+        
+        return user;
     }
 }
