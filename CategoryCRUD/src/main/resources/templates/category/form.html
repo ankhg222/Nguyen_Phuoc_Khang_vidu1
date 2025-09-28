@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layouts/main}">
+<head><title>Form Category</title></head>
+<body>
+<section layout:fragment="content">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h2 class="mb-1">
+          <i class="fas fa-edit me-2" th:if="${category.categoryId != null}"></i>
+          <i class="fas fa-plus me-2" th:unless="${category.categoryId != null}"></i>
+          <span th:text="${category.categoryId != null}? 'Chỉnh sửa Category':'Thêm Category mới'"></span>
+        </h2>
+        <p class="mb-0 opacity-75">
+          <span th:if="${category.categoryId != null}">Cập nhật thông tin category hiện có</span>
+          <span th:unless="${category.categoryId != null}">Tạo category mới cho hệ thống</span>
+        </p>
+      </div>
+      <a th:href="@{/admin/categories}" class="btn btn-secondary btn-modern">
+        <i class="fas fa-arrow-left me-2"></i>
+        Quay lại
+      </a>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card card-modern">
+    <div class="card-body p-4">
+      <form th:action="@{/admin/categories/save}" th:object="${category}" method="post" id="categoryForm">
+        <input type="hidden" th:field="*{categoryId}"/>
+
+        <div class="row">
+          <div class="col-md-8">
+            <!-- Category Name -->
+            <div class="mb-4">
+              <label for="categoryName" class="form-label fw-bold">
+                <i class="fas fa-tag me-2 text-primary"></i>
+                Tên Category <span class="text-danger">*</span>
+              </label>
+              <input type="text" 
+                     id="categoryName"
+                     class="form-control form-control-modern" 
+                     th:field="*{categoryName}"
+                     placeholder="Nhập tên category..."
+                     required>
+              <div class="text-danger small mt-1" th:if="${#fields.hasErrors('categoryName')}" th:errors="*{categoryName}"></div>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Tên category sẽ hiển thị trong danh sách và các form liên quan
+              </div>
+            </div>
+
+            <!-- Image URL -->
+            <div class="mb-4">
+              <label for="categoryImage" class="form-label fw-bold">
+                <i class="fas fa-image me-2 text-success"></i>
+                URL Ảnh
+              </label>
+              <input type="url" 
+                     id="categoryImage"
+                     class="form-control form-control-modern" 
+                     th:field="*{image}"
+                     placeholder="https://example.com/image.jpg">
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Đường dẫn đến ảnh đại diện cho category (tùy chọn)
+              </div>
+            </div>
+
+            <!-- Icon -->
+            <div class="mb-4">
+              <label for="categoryIcon" class="form-label fw-bold">
+                <i class="fas fa-icons me-2 text-warning"></i>
+                Icon
+              </label>
+              <input type="text" 
+                     id="categoryIcon"
+                     class="form-control form-control-modern" 
+                     th:field="*{icon}"
+                     placeholder="fas fa-folder hoặc emoji 📁">
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                Icon hoặc emoji để hiển thị cùng với tên category
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <!-- Status Card -->
+            <div class="card" style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border: none;">
+              <div class="card-body text-center">
+                <h6 class="card-title">
+                  <i class="fas fa-toggle-on me-2 text-primary"></i>
+                  Trạng thái
+                </h6>
+                <div class="form-check form-switch d-flex justify-content-center mb-3">
+                  <input class="form-check-input" 
+                         type="checkbox" 
+                         th:field="*{active}" 
+                         id="active"
+                         style="transform: scale(1.5);">
+                  <label class="form-check-label ms-3" for="active">
+                    <span class="fw-bold">Kích hoạt</span>
+                  </label>
+                </div>
+                <div class="text-muted small">
+                  <i class="fas fa-info-circle me-1"></i>
+                  Category sẽ hiển thị trong danh sách khi được kích hoạt
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview Card -->
+            <div class="card mt-3" style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); border: none;">
+              <div class="card-body text-center">
+                <h6 class="card-title">
+                  <i class="fas fa-eye me-2 text-info"></i>
+                  Xem trước
+                </h6>
+                <div class="preview-category">
+                  <div class="category-icon mb-2">
+                    <i class="fas fa-folder fa-2x text-primary" id="previewIcon"></i>
+                  </div>
+                  <h6 class="mb-0" id="previewName">Tên Category</h6>
+                  <small class="text-muted" id="previewStatus">Trạng thái</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <div class="d-flex justify-content-end gap-3">
+              <a th:href="@{/admin/categories}" class="btn btn-secondary btn-modern">
+                <i class="fas fa-times me-2"></i>
+                Hủy bỏ
+              </a>
+              <button type="submit" class="btn btn-primary-modern btn-modern">
+                <i class="fas fa-save me-2"></i>
+                <span th:text="${category.categoryId != null}? 'Cập nhật':'Tạo mới'"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+// Real-time preview
+document.addEventListener('DOMContentLoaded', function() {
+    const nameInput = document.getElementById('categoryName');
+    const iconInput = document.getElementById('categoryIcon');
+    const activeInput = document.getElementById('active');
+    const previewName = document.getElementById('previewName');
+    const previewIcon = document.getElementById('previewIcon');
+    const previewStatus = document.getElementById('previewStatus');
+
+    function updatePreview() {
+        // Update name
+        previewName.textContent = nameInput.value || 'Tên Category';
+        
+        // Update icon
+        if (iconInput.value) {
+            if (iconInput.value.startsWith('fas ') || iconInput.value.startsWith('far ') || iconInput.value.startsWith('fab ')) {
+                previewIcon.className = iconInput.value + ' fa-2x text-primary';
+            } else {
+                previewIcon.textContent = iconInput.value;
+                previewIcon.className = 'fa-2x text-primary';
+            }
+        } else {
+            previewIcon.className = 'fas fa-folder fa-2x text-primary';
+        }
+        
+        // Update status
+        previewStatus.textContent = activeInput.checked ? 'Hoạt động' : 'Tạm dừng';
+        previewStatus.className = activeInput.checked ? 'text-success' : 'text-muted';
+    }
+
+    nameInput.addEventListener('input', updatePreview);
+    iconInput.addEventListener('input', updatePreview);
+    activeInput.addEventListener('change', updatePreview);
+    
+    // Initial preview
+    updatePreview();
+});
+
+// Form validation
+document.getElementById('categoryForm').addEventListener('submit', function(e) {
+    const nameInput = document.getElementById('categoryName');
+    if (!nameInput.value.trim()) {
+        e.preventDefault();
+        nameInput.focus();
+        nameInput.classList.add('is-invalid');
+        return false;
+    }
+});
+</script>
+</body>
+</html>

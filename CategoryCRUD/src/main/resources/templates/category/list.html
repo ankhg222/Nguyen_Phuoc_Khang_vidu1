@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layouts/main}">
+<head><title>Danh sách Category</title></head>
+<body>
+<section layout:fragment="content">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h2 class="mb-1">
+          <i class="fas fa-list me-2"></i>
+          Danh sách Category
+        </h2>
+        <p class="mb-0 opacity-75">Quản lý và theo dõi tất cả các danh mục trong hệ thống</p>
+      </div>
+      <a th:href="@{/admin/categories/create}" class="btn btn-success-modern btn-modern">
+        <i class="fas fa-plus me-2"></i>
+        Thêm mới
+      </a>
+    </div>
+  </div>
+
+  <!-- Search and Filter -->
+  <div class="card card-modern mb-4">
+    <div class="card-body">
+      <form th:action="@{/admin/categories}" method="get">
+        <div class="row g-3 align-items-end">
+          <div class="col-md-8">
+            <label for="searchInput" class="form-label">
+              <i class="fas fa-search me-1"></i>
+              Tìm kiếm theo tên
+            </label>
+            <input type="text" 
+                   id="searchInput"
+                   class="form-control form-control-modern" 
+                   name="q" 
+                   th:value="${q}" 
+                   placeholder="Nhập tên category để tìm kiếm...">
+          </div>
+          <div class="col-md-4">
+            <button class="btn btn-primary-modern btn-modern w-100" type="submit">
+              <i class="fas fa-search me-2"></i>
+              Tìm kiếm
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Categories Table -->
+  <div class="card card-modern">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-modern table-hover mb-0">
+          <thead>
+            <tr>
+              <th class="text-center" style="width: 80px;">
+                <i class="fas fa-hashtag me-1"></i>
+                ID
+              </th>
+              <th>
+                <i class="fas fa-tag me-1"></i>
+                Tên Category
+              </th>
+              <th class="text-center" style="width: 120px;">
+                <i class="fas fa-image me-1"></i>
+                Ảnh
+              </th>
+              <th class="text-center" style="width: 120px;">
+                <i class="fas fa-toggle-on me-1"></i>
+                Trạng thái
+              </th>
+              <th class="text-center" style="width: 200px;">
+                <i class="fas fa-cogs me-1"></i>
+                Thao tác
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="c : ${data.content}" class="align-middle">
+              <td class="text-center">
+                <span class="badge bg-secondary fs-6" th:text="${c.categoryId}"></span>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="category-icon me-3">
+                    <i class="fas fa-folder text-primary fa-lg"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0" th:text="${c.categoryName}"></h6>
+                    <small class="text-muted" th:if="${c.icon}" th:text="${c.icon}"></small>
+                  </div>
+                </div>
+              </td>
+              <td class="text-center">
+                <div th:if="${c.image}" class="category-image">
+                  <img th:src="${c.image}" 
+                       alt="Category image" 
+                       class="img-thumbnail rounded"
+                       style="width: 60px; height: 60px; object-fit: cover;">
+                </div>
+                <div th:unless="${c.image}" class="text-muted">
+                  <i class="fas fa-image fa-2x opacity-50"></i>
+                  <br>
+                  <small>Không có ảnh</small>
+                </div>
+              </td>
+              <td class="text-center">
+                <span class="badge fs-6" 
+                      th:classappend="${c.active}? 'bg-success':'bg-secondary'"
+                      th:text="${c.active}? 'Hoạt động':'Tạm dừng'">
+                </span>
+              </td>
+              <td class="text-center">
+                <div class="btn-group" role="group">
+                  <a th:href="@{|/admin/categories/${c.categoryId}/edit|}" 
+                     class="btn btn-warning-modern btn-sm btn-modern"
+                     title="Chỉnh sửa">
+                    <i class="fas fa-edit"></i>
+                  </a>
+                  <form th:action="@{|/admin/categories/${c.categoryId}/delete|}" 
+                        method="post" 
+                        class="d-inline"
+                        onsubmit="return confirmDelete('${c.categoryName}')">
+                    <button type="submit" 
+                            class="btn btn-danger-modern btn-sm btn-modern"
+                            title="Xóa">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(data.content)}">
+              <td colspan="5" class="text-center py-5">
+                <div class="empty-state">
+                  <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                  <h5 class="text-muted">Không có dữ liệu</h5>
+                  <p class="text-muted">Chưa có category nào trong hệ thống</p>
+                  <a th:href="@{/admin/categories/create}" class="btn btn-primary-modern btn-modern">
+                    <i class="fas fa-plus me-2"></i>
+                    Thêm category đầu tiên
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <nav th:if="${data.totalPages > 1}" class="mt-4">
+    <ul class="pagination pagination-modern justify-content-center">
+      <li class="page-item" th:classappend="${data.first}? 'disabled'">
+        <a class="page-link" th:href="@{/admin/categories(page=${data.number-1},q=${q})}">
+          <i class="fas fa-chevron-left"></i>
+        </a>
+      </li>
+      <li class="page-item" th:each="p : ${#numbers.sequence(0, data.totalPages-1)}"
+          th:classappend="${p==data.number}? 'active'">
+        <a class="page-link" th:text="${p+1}"
+           th:href="@{/admin/categories(page=${p},q=${q})}"></a>
+      </li>
+      <li class="page-item" th:classappend="${data.last}? 'disabled'">
+        <a class="page-link" th:href="@{/admin/categories(page=${data.number+1},q=${q})}">
+          <i class="fas fa-chevron-right"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Stats Info -->
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <div class="card card-modern">
+        <div class="card-body text-center">
+          <i class="fas fa-chart-bar fa-2x text-primary mb-2"></i>
+          <h5 th:text="${data.totalElements}">0</h5>
+          <small class="text-muted">Tổng số categories</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card card-modern">
+        <div class="card-body text-center">
+          <i class="fas fa-file-alt fa-2x text-success mb-2"></i>
+          <h5 th:text="${data.number + 1}">1</h5>
+          <small class="text-muted">Trang hiện tại</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function confirmDelete(categoryName) {
+  return confirm(`Bạn có chắc chắn muốn xóa category "${categoryName}"?\n\nHành động này không thể hoàn tác!`);
+}
+</script>
+</body>
+</html>
