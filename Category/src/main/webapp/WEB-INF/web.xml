@@ -76,15 +76,6 @@
     <url-pattern>/admin/profile/update</url-pattern>
   </servlet-mapping>
 
-  <servlet>
-    <servlet-name>TestController</servlet-name>
-    <servlet-class>vn.iot.controller.TestController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>TestController</servlet-name>
-    <url-pattern>/test</url-pattern>
-  </servlet-mapping>
-
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>home</welcome-file>
