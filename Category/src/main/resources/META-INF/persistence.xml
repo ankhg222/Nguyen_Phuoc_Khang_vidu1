@@ -6,6 +6,7 @@
   <persistence-unit name="dataSource" transaction-type="RESOURCE_LOCAL">
     <class>vn.iot.entity.Category</class>
     <class>vn.iot.entity.Video</class>
+    <class>vn.iot.entity.User</class>
     <properties>
       <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=User;encrypt=false;trustServerCertificate=true"/>

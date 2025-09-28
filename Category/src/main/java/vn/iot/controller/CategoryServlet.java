@@ -3,15 +3,10 @@ package vn.iot.controller;
 import java.io.IOException;
 import java.util.List;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import vn.iot.dao.CategoryDAO;
 import vn.iot.entity.Category;
 
-@WebServlet(urlPatterns={
-  "/admin/category","/admin/category/edit",
-  "/admin/category/create","/admin/category/update","/admin/category/delete"
-})
 public class CategoryServlet extends HttpServlet {
   private final CategoryDAO dao = new CategoryDAO();
 

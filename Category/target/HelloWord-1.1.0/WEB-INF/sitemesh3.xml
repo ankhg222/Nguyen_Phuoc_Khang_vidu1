@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+    <!-- Admin pages use admin decorator -->
+    <mapping path="/admin/*" decorator="/decorators/admin.jsp"/>
+    
+    <!-- User pages use user decorator -->
+    <mapping path="/user/*" decorator="/decorators/user.jsp"/>
+    
+    <!-- All other pages use web decorator -->
+    <mapping path="/*" decorator="/decorators/web.jsp"/>
+    
+    <!-- Exclude static resources -->
+    <mapping path="/uploads/*" exclue="true"/>
+    <mapping path="/css/*" exclue="true"/>
+    <mapping path="/js/*" exclue="true"/>
+    <mapping path="/images/*" exclue="true"/>
+</sitemesh>

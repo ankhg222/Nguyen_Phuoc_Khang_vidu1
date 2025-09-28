@@ -34,4 +34,21 @@ public class CategoryDAO {
     catch(Exception e){ if(tx.isActive()) tx.rollback(); throw e; }
     finally { em.close(); }
   }
+  
+  public int count() {
+    EntityManager em = JpaConfig.em();
+    try {
+      Long count = em.createQuery("SELECT COUNT(c) FROM Category c", Long.class).getSingleResult();
+      return count.intValue();
+    } catch (Exception e) {
+      return 0;
+    } finally {
+      em.close();
+    }
+  }
+  
+  public void close() {
+    // EntityManager được đóng tự động trong mỗi method
+    // Method này để tương thích với HomeController
+  }
 }

@@ -45,16 +45,12 @@
             <artifactId>mssql-jdbc</artifactId>
             <version>13.2.0.jre11</version>
         </dependency>
+        <!-- JSTL Implementation -->
         <dependency>
-    <groupId>jakarta.servlet.jsp.jstl</groupId>
-    <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-    <version>3.0.0</version>
-</dependency>
-<dependency>
-    <groupId>org.glassfish.web</groupId>
-    <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-    <version>3.0.1</version>
-</dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <version>3.0.1</version>
+        </dependency>
 
 <dependency>
 			<groupId>org.hibernate.orm</groupId>
@@ -67,6 +63,27 @@
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>8.0.2.Final</version>
+		</dependency>
+
+		<!-- SiteMesh 3 -->
+		<dependency>
+			<groupId>org.sitemesh</groupId>
+			<artifactId>sitemesh</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+
+		<!-- Commons FileUpload -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.5</version>
+		</dependency>
+
+		<!-- Commons IO -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
 		</dependency>
     </dependencies>
 
@@ -85,6 +102,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
+                <configuration>
+                    <warName>HelloWord</warName>
+                </configuration>
             </plugin>
         </plugins>
     </build>
